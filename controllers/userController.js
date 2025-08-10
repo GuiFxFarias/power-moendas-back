@@ -71,7 +71,7 @@ class UserController {
   }
 
   async criarUsers(req, res) {
-    const { nome, email, telefone, senha, inicio_teste_gratis } = req.body;
+    const { nome, email, telefone, senha } = req.body;
 
     try {
       if (!nome || !email || !telefone || !senha) {
@@ -94,7 +94,6 @@ class UserController {
         telefone,
         senha: senhaCriptografada,
         tenant_id,
-        inicio_teste_gratis,
       });
 
       return res.status(201).json({
