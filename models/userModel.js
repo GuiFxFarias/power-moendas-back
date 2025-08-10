@@ -37,7 +37,7 @@ class UserModel {
     inicio_teste_gratis,
   }) {
     const sql = `
-    INSERT INTO usuarios (nome, email, telefone, senha, tenant_id, inicio_teste_gratis)
+    INSERT INTO usuarios (nome, email, telefone, senha)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
     return this.executaQuery(sql, [
