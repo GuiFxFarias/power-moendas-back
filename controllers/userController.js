@@ -39,7 +39,6 @@ class UserController {
         {
           id: usuario.id,
           email: usuario.email,
-          tenant_id: usuario.tenant_id,
         },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
@@ -53,11 +52,9 @@ class UserController {
           id: usuario.id,
           email: usuario.email,
           nome: usuario.nome,
-          tenant_id: usuario.tenant_id,
         },
         value: {
           token,
-          tenant_id: usuario.tenant_id,
           expiration,
         },
       });

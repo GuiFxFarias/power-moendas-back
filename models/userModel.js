@@ -19,7 +19,7 @@ class UserModel {
   }
 
   buscarPorEmailETenant(email, tenant_id) {
-    const sql = 'SELECT * FROM usuarios WHERE email = ? AND tenant_id = ?';
+    const sql = 'SELECT * FROM usuarios WHERE email = ?';
     return this.executaQuery(sql, [email, tenant_id]);
   }
 
@@ -28,26 +28,12 @@ class UserModel {
     return this.executaQuery(sql, [tenant_id]);
   }
 
-  criarUsuario({
-    nome,
-    email,
-    telefone,
-    senha,
-    tenant_id,
-    inicio_teste_gratis,
-  }) {
+  criarUsuario({ nome, email, telefone, senha }) {
     const sql = `
     INSERT INTO usuarios (nome, email, telefone, senha)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
-    return this.executaQuery(sql, [
-      nome,
-      email,
-      telefone,
-      senha,
-      tenant_id,
-      inicio_teste_gratis,
-    ]);
+    return this.executaQuery(sql, [nome, email, telefone, senha]);
   }
 
   salvarTokenRecuperacao(email, token, expira) {
