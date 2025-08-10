@@ -83,23 +83,16 @@ class UserController {
 
       const senhaCriptografada = await bcrypt.hash(senha, 10);
 
-      const nomePart = nome.substring(0, 4).toLowerCase().replace(/\s/g, '');
-      const emailPart = email.split('@')[0].substring(0, 4).toLowerCase();
-      const telefonePart = telefone.replace(/\D/g, '').substring(0, 4);
-      const tenant_id = `${nomePart}${emailPart}${telefonePart}`;
-
       await userModel.criarUsuario({
         nome,
         email,
         telefone,
         senha: senhaCriptografada,
-        tenant_id,
       });
 
       return res.status(201).json({
         sucesso: true,
         mensagem: 'Usuário criado com sucesso!',
-        tenant_id,
       });
     } catch (erro) {
       console.error('Erro ao criar usuário:', erro);
