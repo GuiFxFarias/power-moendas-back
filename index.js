@@ -3,10 +3,6 @@ const router = require('./routers/indexRotas.js');
 const cors = require('cors');
 const path = require('path');
 
-const { enviarMensagemWhatsApp } = require('./services/twilioService.js');
-
-require('./services/agendadorMensagens.js');
-
 const express = require('express');
 const app = express();
 

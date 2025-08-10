@@ -2,15 +2,10 @@ const userModel = require('../models/userModel.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { enviarEmail } = require('../services/emailService.js');
-const {
-  verificaAcessoLiberado,
-} = require('../middlewares/verificaTesteGratuito.js');
 
 class UserController {
   async buscarUsers(req, res) {
     const { email, senha } = req.body;
-    const assinatura = req.query.assinatura == 'true';
 
     try {
       if (!email || !senha) {
@@ -39,15 +34,6 @@ class UserController {
         });
       }
 
-      const acesso_liberado = await verificaAcessoLiberado(usuario);
-
-      if (!acesso_liberado && !assinatura) {
-        return res.status(403).json({
-          sucesso: false,
-          erro: 'Seu acesso expirou. Acesse a página de pagamento para renovar.',
-        });
-      }
-
       // Geração de token
       const token = jwt.sign(
         {
@@ -68,7 +54,6 @@ class UserController {
           email: usuario.email,
           nome: usuario.nome,
           tenant_id: usuario.tenant_id,
-          acesso_liberado,
         },
         value: {
           token,
@@ -148,26 +133,16 @@ class UserController {
 
       await userModel.salvarTokenRecuperacao(email, token, expira);
 
-      const link = `http://www.gcalendar.com.br/redefinir-senha?token=${token}`;
-      const html = `
-      <p>Olá,</p>
-      <p>Você solicitou a redefinição da sua senha. Clique no link abaixo para criar uma nova senha:</p>
-      <p><a href="${link}">${link}</a></p>
-      <p>Este link é válido por 1 hora.</p>
-      <p>Se você não solicitou, ignore este e-mail.</p>
-    `;
-
-      await enviarEmail(email, '🔐 Redefinição de Senha - G-Calendar', html);
-
       return res.status(200).json({
         sucesso: true,
-        mensagem: 'E-mail de recuperação enviado com sucesso!',
+        mensagem: 'Token de recuperação gerado com sucesso!',
+        token, // Retorna o token na resposta (em produção, remova esta linha)
       });
     } catch (erro) {
       console.error('Erro em esqueciSenha:', erro);
       return res
         .status(500)
-        .json({ sucesso: false, erro: 'Erro ao enviar e-mail.' });
+        .json({ sucesso: false, erro: 'Erro interno do servidor.' });
     }
   }
 
