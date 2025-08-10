@@ -8,17 +8,13 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      'http://localhost:3000',
-      'https://g-calender.vercel.app',
-      'https://www.gcalendar.com.br',
-    ],
+    origin: ['http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   })
 );
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 router(app, express);
 
