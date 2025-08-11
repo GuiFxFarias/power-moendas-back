@@ -31,7 +31,7 @@ class UserModel {
   criarUsuario({ nome, email, telefone, senha }) {
     const sql = `
     INSERT INTO usuarios (nome, email, telefone, senha)
-    VALUES (?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?)
   `;
     return this.executaQuery(sql, [nome, email, telefone, senha]);
   }
